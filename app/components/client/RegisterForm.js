@@ -2,12 +2,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import bcrypt from "bcryptjs";
+
 function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter()
+
+ 
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -20,15 +24,13 @@ function RegisterForm() {
       return;
     }
     try {
-      let getuser = await fetch("api/userexist", {
-        method: "POST",
+      let getuser = await fetch(`api/userexist?email=${email}`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-        }),
-      });
+        
+      })
 
       let { user } = await getuser.json();
 
@@ -40,6 +42,8 @@ function RegisterForm() {
         return;
       }
 
+      let hashpassword = await bcrypt.hash(password,11)
+
       const res = await fetch("api/register", {
         method: "POST",
         headers: {
@@ -48,7 +52,7 @@ function RegisterForm() {
         body: JSON.stringify({
           name,
           email,
-          password,
+          password: hashpassword
         }),
       });
 
@@ -78,17 +82,20 @@ function RegisterForm() {
             onChange={(e) => setName(e.target.value)}
             type="text"
             placeholder="Full name"
+            value={name}
           />
           <input
             onChange={(e) => setEmail(e.target.value)}
             type="text"
             placeholder="email"
+            value={email}
           />
           <input
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="password"
             autoComplete="true"
+            value={password}
           />
           <button
             type="submit"

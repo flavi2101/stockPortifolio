@@ -1,23 +1,29 @@
 import Link from "next/link";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
-function Menu() {
+async function Menu() {
+
+  const session = await getServerSession(authOptions)
+  
   let nav = [
+    //TODO: alterar roda dinamida id
     {
       name: "Minha Carteira",
-      path: "/dashboard/meu_portifolio",
+      path:`/dashboard/user/${session.user.id}/meu_portifolio`,
+      
     },
     {
       name: "Recomendaçoes",
-      path: "/dashboard/recomendacoes",
+      path:`/dashboard/user/${session.user.id}/recomendacoes`,
+      
     },
     {
       name: "Carteira Roberto",
-      path: "/dashboard/roberto_portifolio",
+      path:`/dashboard/user/${session.user.id}/roberto_portifolio`,
+      
     },
-    {
-      name: "Analise",
-      path: "/dashboard/analise",
-    },
+   
   ];
   return (
     <nav>

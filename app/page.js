@@ -1,11 +1,12 @@
-import LoginForm from "./components/LoginForm";
 
+import LoginForm from "./components/client/LoginForm";
 
 export default function Home() {
-
   return (
-    <main>
-      <LoginForm />
-    </main>
+    
+      <main>
+        <LoginForm />
+      </main>
+    
   );
 }
