@@ -1,11 +1,13 @@
-import AuthProviders from "../Providers";
-import Menu from "../components/menu";
+import AuthProviders from "../AuthProvider";
+
+import Menu from "../components/server/menu";
 export default function Main({ children }) {
   return (
     <AuthProviders>
-      <section className="h-full">
+      <section>
         <Menu />
         <main>{children}</main>
+      
       </section>
     </AuthProviders>
   );

@@ -1,19 +1,18 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-export async function POST(req) {
+import client from "@/app/lib/prisma_client";
+export async function GET(req) {
   try {
-    const prisma = new PrismaClient();
-    const { email } = await req.json();
-
-    let user = await prisma.users.findUnique({
-      where:{
-        email:email
-      }
-    })
-    console.log("user", user);
+    const  email  = req.nextUrl.searchParams.get("email");
+  
+    let user = await client.users.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    client.$disconnect()
     return NextResponse.json({ user });
   } catch (error) {
     console.log("error", error.message);
-    NextResponse.error()
+    NextResponse.error();
   }
 }

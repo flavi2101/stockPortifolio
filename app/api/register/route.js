@@ -1,22 +1,19 @@
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
+import client from "@/app/lib/prisma_client";
 
 export async function POST(req) {
   try {
     const { name, email, password } = await req.json();
-    const hashpassword = await bcrypt.hash(password, 10);
 
-    const prisma = new PrismaClient();
 
-    await prisma.users.create({
+    await client.users.create({
       data: {
         name,
         email,
-        password: hashpassword,
+        password,
       },
     });
-    prisma.$disconnect()
+    client.$disconnect();
     return NextResponse.json({ message: "use registerd" }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
