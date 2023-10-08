@@ -3,7 +3,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 
 export async function MenuItens() {
-  const session = await getServerSession(authOptions);
+ const session = await getServerSession(authOptions);
   const itens = [
     {
       name: "Minha Carteira",
@@ -20,6 +20,10 @@ export async function MenuItens() {
     {
       name: "Carteira Roberto",
       path: `/dashboard/user/${session.user.id}/roberto_portifolio`,
+    },
+    {
+      name: "Blog",
+      path: `/dashboard/user/${session.user.id}/blog`,
     },
     {
       name: "Mentoria",
@@ -59,7 +63,11 @@ export async function MenuItens() {
     });
   } else if (session.user.role === "MENTORADO") {
     let menuMentorado = itens.filter((item) => {
-      if (item.name !== "Mentores" && item.name !== "admin") {
+      if (
+        item.name !== "Mentores" &&
+        item.name !== "admin" &&
+        item.name !== "Mentoria"
+      ) {
         return item;
       }
     });
