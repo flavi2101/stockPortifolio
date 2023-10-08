@@ -48,7 +48,7 @@ export const authOptions = {
   //TODO: configurar paginas
   pages: {
     signIn: "/",
-    singOut: "/register",
+    singOut: "/",
   },
   callbacks: {
     async jwt({ token, user, session }) {
