@@ -5,12 +5,17 @@ export async function POST(req) {
   try {
     const { name, email, password } = await req.json();
 
-
     await client.users.create({
       data: {
         name,
         email,
         password,
+        portfolio: {
+          create: {},
+        },
+      },
+      include: {
+        portfolio: true,
       },
     });
     client.$disconnect();
