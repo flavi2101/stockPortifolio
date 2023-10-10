@@ -8,7 +8,7 @@ export default function UserTable({ user }) {
       <td>{user.email}</td>
       <td>{user.role}</td>
       <td>
-        <EditUser />
+        <EditUser user={user} />
       </td>
     </tr>
   );

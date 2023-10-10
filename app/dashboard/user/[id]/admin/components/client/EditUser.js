@@ -2,16 +2,33 @@
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
-import ModalHandler from "./ModalEditAsset";
+import ModalHandler from "./ModalHandler";
 import { useDisclosure } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import EditRole from "./modalChildRole";
+import DeleteUser from "./ModalChildDelete";
 
-export default function EditUser() {
-  let [editModal, setEditModal] = useState(false);
+export default function EditUser({ user }) {
+  let [openEditModal, setOpenEditModal] = useState(false);
+  let [opeonDeleteModal, setopeonDeleteModal] = useState(false);
+
+  let [role, setRole] = useState("");
+  let [triggerEditOrDelete, setTriggerEditOrDelete] = useState(null);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  let router = useRouter();
+
   function editHandler() {
-    setEditModal(true);
+    setOpenEditModal(true);
     onOpen();
+    setTriggerEditOrDelete(true);
+  }
+
+  function deleteHandler() {
+    setopeonDeleteModal(true);
+    onOpen();
+    setTriggerEditOrDelete(false);
   }
 
   return (
@@ -21,10 +38,37 @@ export default function EditUser() {
           <EditIcon color="success" />
         </button>
       </li>
+
+      {openEditModal && (
+        <ModalHandler
+          isOpen={isOpen}
+          onClose={onClose}
+          user={user}
+          route={router}
+          role={role}
+          trigger={triggerEditOrDelete}
+        >
+          <EditRole role={role} setRole={setRole} />
+        </ModalHandler>
+      )}
+
       <li key={2}>
-        <DeleteIcon color="error" />
+        <button onClick={() => deleteHandler()}>
+          <DeleteIcon color="error" />
+        </button>
       </li>
-      {editModal && <ModalHandler isOpen={isOpen} onClose={onClose} />}
+
+      {opeonDeleteModal && (
+        <ModalHandler
+          isOpen={isOpen}
+          onClose={onClose}
+          user={user}
+          route={router}
+          trigger={triggerEditOrDelete}
+        >
+          <DeleteUser />
+        </ModalHandler>
+      )}
     </ul>
   );
 }
